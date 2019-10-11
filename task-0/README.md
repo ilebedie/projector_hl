@@ -19,8 +19,9 @@ To run test execute following script:
 
 `./run.sh`
 
-It will first run web server with default setting and then 
-web server with increased number of worker connectins.
+It will run attacking containers and first run container for
+web server with default settings and then web server with 
+increased number of worker connections.
 It will also query default page, time the connection and 
-show the response of the server.s
+show the response of the servers
 
