@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  appserver:
+    build:
+      context: appserver
+      dockerfile: Dockerfile
+    command: gunicorn -w 3 -b 0.0.0.0:5000 appserver:app --reload
+    environment:
+      - FLASK_APP=/src/appserver.py
+    volumes:
+      - ./appserver:/src
+    ports:
+      - 5000:5000
+
+  vulnerable_nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./vulnerable_nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  protected_nginx:
+    image: nginx
+    ports:
+      - 80:80
+    volumes:
+      - ./vulnerable_nginx/nginx.conf:/etc/nginx/nginx.conf
+
+  slowloris:
+    build:
+      context: slowloris
+      dockerfile: Dockerfile
+    command: slowloris vulnerable_nginx
+
